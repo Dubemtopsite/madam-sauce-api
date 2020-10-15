@@ -4,33 +4,61 @@ MongoClient.connect('mongodb://127.0.0.1:27017/orderDB', (err, client) => {
     if(err) return
     console.log(err)
     console.log('Connected to database')
-
     db = client.db('orderDB');
-
-    
 })
 
 function DataBaseOP(){
     this.getFoodList = (collectionName) => {
-        return db.collection(collectionName).find().toArray((err, result) => {
-            if(err) throw err
-            //console.log('database find');
-            return result;
-        })
+        return db.collection(collectionName).find().toArray()
+            .then( results => {
+                return results;
+            })
+            .catch( err => {
+                return false;
+            })
+    }
+
+    this.getItemById = (collectionName, itemId) => {
+        var queryCollection = db.collection(collectionName);
+        return queryCollection.findOne({item_id: parseInt(itemId)})
+            .then( result => {
+                return result;
+            })
+            .catch( err => {
+                return false;
+            })
     }
 
     this.saveItem = (collectionName, saveItem) => {
         var queryCollection = db.collection(collectionName);
         return queryCollection.insertOne(saveItem)
             .then( result => {
-                console.log(result.insertedId);
                 return true;
             })
             .catch(err => {
-                console.error('Failed to save')
                 return false;
             })
                 
+    }
+
+    this.updateItem = (collectionName, updateQuery, updateObject) => {
+        var queryCollection = db.collection(collectionName);
+        return queryCollection.findOneAndUpdate(
+            updateQuery, 
+            {
+                $set : updateObject
+            }
+        )
+        .then( result => {
+            if(!result.value){
+                return false;
+            }else{
+                return true;
+            }
+        })
+        .catch( err => {
+            return false;
+        })
     }
 }
 
