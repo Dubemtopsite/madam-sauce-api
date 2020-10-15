@@ -1,0 +1,15 @@
+{
+  "name": "foodorderapi",
+  "version": "1.0.0",
+  "description": "This app is for food vendor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "foodOrderApi"
+  },
+  "author": "Owoh Chidubem Alexander",
+  "license": "ISC"
+}
