@@ -9,7 +9,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.get('/', (req, res) => {
     res.redirect('/menu');
 })
-
 app.get('/admin/food', async (req, res) => {
     var outputData = await food.foodClass.printOutFoods();
     res.json(outputData);
