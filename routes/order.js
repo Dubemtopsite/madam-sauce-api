@@ -3,13 +3,17 @@ const db = require('./../dbConn');
 function OrderClass(){
     this.getAllOrder = async () => {
         var returnData = await db.dbOP.getItemWhere('orderCollection', {order_status: '0'});
-        console.log(returnData);
         if(returnData){
-            if(returnData.length === 0){
+            if(returnData.length > 0){
                 return {
                     status: 200,
                     message: 'You have some unattended orders',
                     order_list: returnData
+                }
+            }else{
+                return {
+                    status: 200,
+                    message: 'No order available menu for now'
                 }
             }
         }else{
@@ -39,6 +43,22 @@ function OrderClass(){
             return {
                 status: 500,
                 message: 'No food avaiable menu for now'
+            }
+        }
+    }
+
+    this.getOrderById = async (orderId) => {
+        var returnData = await db.dbOP.getItemById('orderCollection', {item_id: parseInt(orderId)});
+        if(returnData){
+            return {
+                status: 200,
+                message: 'Order detail',
+                order_item: returnData
+            }
+        }else{
+            return {
+                status: 500,
+                message: 'No order with such id found',
             }
         }
     }
@@ -94,7 +114,7 @@ function OrderClass(){
         }
     }
 
-    this.changeOrderStatus = (orderId) => {
+    this.changeOrderStatus = async(orderId) => {
         var returnData = await db.dbOP.getItemById('orderCollection', {item_id: parseInt(orderId)});
         if(returnData){
             const updatedOrder = {

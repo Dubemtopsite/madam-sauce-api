@@ -5,18 +5,32 @@ function FoodClass(){
     this.printOutFoods = async () => {
         var returnData = await db.dbOP.getItemList('foodCollection');
         if(returnData){
-            return returnData;
+            return {
+                status: 200,
+                message: 'List of food in your menu',
+                food_list: returnData
+            }
         }else{
-            return 'No Food Found. Please add foods to your menu';
+            return {
+                status: 200,
+                message: 'No Food Found. Please add foods to your menu',
+            }
         }
     }
 
     this.getFoodItemById = async (foodId) => {
         var returnData = await db.dbOP.getItemById('foodCollection', {item_id: parseInt(foodId)});
         if(returnData){
-            return returnData;
+            return {
+                status: 200,
+                message: 'Food item in the menu',
+                food_item: returnData
+            }
         }else{
-            return 'No Food with id found on the menu'; 
+            return {
+                status: 500,
+                message: 'No Food with id found on the menu',
+            }
         }
     }
 
@@ -31,14 +45,23 @@ function FoodClass(){
                 available: foodArray.available
             }
             if(db.dbOP.saveItem('foodCollection', foodObject)){
-                return 'Food added to menu';
+                return {
+                    status: 200,
+                    message: 'Food added to the menu',
+                    food_id: foodObject.item_id
+                }
             }else{
-                return 'An error occured please try again';
+                return {
+                    status: 500,
+                    message: 'An error occured please try again',
+                }
             }
         }else{
-            return 'Please provide the necessary input needed';
+            return {
+                status: 500,
+                message: 'No food with the provided id found on the menu',
+            }
         }
-       // console.log(typeof(foodArray.price));
     }
 
     this.validateInput = (foodArray) => {

@@ -12,14 +12,14 @@ app.get('/', (req, res) => {
 
 app.get('/admin/food', async (req, res) => {
     var outputData = await food.foodClass.printOutFoods();
-    res.send(outputData);
+    res.json(outputData);
 })
 app.get('/admin/food/:id', async (req, res) => {
     var outputData = await food.foodClass.getFoodItemById(req.params.id);
-    res.send(outputData);
+    res.json(outputData);
 })
 app.post('/admin/food', (req, res) => {
-    res.send(food.foodClass.saveFood(req.body));
+    res.json(food.foodClass.saveFood(req.body));
 })
 app.put('/admin/food/:id', async (req, res) => {
     res.json(await food.foodClass.updateFood( req.params.id, req.body));
@@ -31,7 +31,11 @@ app.get('/admin/orders', async (req, res) => {
     var outputData = await order.orderClass.getAllOrder();
     res.json(outputData);
 })
-app.get('/admin/approve_prder/:id', async (req, res) => {
+app.get('/admin/orders/:id', async (req, res) => {
+    var outputData = await order.orderClass.getOrderById(req.params.id);
+    res.json(outputData);
+})
+app.get('/admin/approve_order/:id', async (req, res) => {
     res.json(await order.orderClass.changeOrderStatus(req.params.id));
 })
 app.get('/menu', async (req, res) => {
@@ -39,6 +43,10 @@ app.get('/menu', async (req, res) => {
 })
 app.post('/place_order', async (req, res) => {
     res.json(await order.orderClass.placeOrder(req.body));
+})
+app.get('/order/:id', async (req, res) => {
+    var outputData = await order.orderClass.getOrderById(req.params.id);
+    res.json(outputData);
 })
 
 
