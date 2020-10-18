@@ -93,6 +93,31 @@ function OrderClass(){
             return false;
         }
     }
+
+    this.changeOrderStatus = (orderId) => {
+        var returnData = await db.dbOP.getItemById('orderCollection', {item_id: parseInt(orderId)});
+        if(returnData){
+            const updatedOrder = {
+                order_status: 1
+            }
+            if(await db.dbOP.updateItem('orderCollection',{item_id: parseInt(orderId)}, updatedOrder)){
+                return {
+                    status: 200,
+                    message: 'Food order and delivery has been completed'
+                }
+            }else{
+                return {
+                    status: 500,
+                    message: 'An error occured. please try again later'
+                }
+            }
+        }else{
+            return {
+                status: 200,
+                message: 'No such order with this id'
+            }
+        }
+    }
 }
 
 const orderClass = new OrderClass()

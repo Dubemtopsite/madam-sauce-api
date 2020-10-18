@@ -31,6 +31,9 @@ app.get('/admin/orders', async (req, res) => {
     var outputData = await order.orderClass.getAllOrder();
     res.json(outputData);
 })
+app.get('/admin/approve_prder/:id', async (req, res) => {
+    res.json(await order.orderClass.changeOrderStatus(req.params.id));
+})
 app.get('/menu', async (req, res) => {
     res.json(await order.orderClass.getFoodMenu());
 })

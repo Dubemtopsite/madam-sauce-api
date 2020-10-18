@@ -18,9 +18,9 @@ function DataBaseOP(){
             })
     }
 
-    this.getItemById = (collectionName, itemId) => {
+    this.getItemById = (collectionName, queryObject) => {
         var queryCollection = db.collection(collectionName);
-        return queryCollection.findOne({item_id: parseInt(itemId)})
+        return queryCollection.findOne(queryObject)
             .then( result => {
                 return result;
             })

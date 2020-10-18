@@ -12,7 +12,7 @@ function FoodClass(){
     }
 
     this.getFoodItemById = async (foodId) => {
-        var returnData = await db.dbOP.getItemById('foodCollection', foodId);
+        var returnData = await db.dbOP.getItemById('foodCollection', {item_id: parseInt(foodId)});
         if(returnData){
             return returnData;
         }else{
