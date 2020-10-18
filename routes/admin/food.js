@@ -85,7 +85,7 @@ function FoodClass(){
         if(await db.dbOP.deleteItem('foodCollection', {item_id: parseInt(foodId)})){
             return {
                 status: 200,
-                message: 'Food deleted from menu'
+                message: 'Food deleted with id #'+ foodId +' from menu',
             }
         }else{
             return {
