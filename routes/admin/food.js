@@ -3,7 +3,7 @@ const db = require('./../../dbConn');
 function FoodClass(){
 
     this.printOutFoods = async () => {
-        var returnData = await db.dbOP.getFoodList('foodCollection');
+        var returnData = await db.dbOP.getItemList('foodCollection');
         if(returnData){
             return returnData;
         }else{
@@ -68,9 +68,30 @@ function FoodClass(){
             }
         }
         if(await db.dbOP.updateItem('foodCollection',{item_id: parseInt(foodId)}, foodUpdateObject)){
-            return 'Item updated';
+            return {
+                status: 200,
+                message: 'Food updated',
+                update_id: foodId
+            }
         }else{
-            return 'Item do not exist in the food menu';
+            return {
+                status: 200,
+                message: 'Item do not exist in the food menu'
+            }
+        }
+    }
+
+    this.deleteFood = async (foodId) => {
+        if(await db.dbOP.deleteItem('foodCollection', {item_id: parseInt(foodId)})){
+            return {
+                status: 200,
+                message: 'Food deleted from menu'
+            }
+        }else{
+            return {
+                status: 500,
+                message: 'An error occured while deleting'
+            }
         }
     }
 }

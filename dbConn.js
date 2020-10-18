@@ -8,7 +8,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/orderDB', (err, client) => {
 })
 
 function DataBaseOP(){
-    this.getFoodList = (collectionName) => {
+    this.getItemList = (collectionName) => {
         return db.collection(collectionName).find().toArray()
             .then( results => {
                 return results;
@@ -23,6 +23,16 @@ function DataBaseOP(){
         return queryCollection.findOne({item_id: parseInt(itemId)})
             .then( result => {
                 return result;
+            })
+            .catch( err => {
+                return false;
+            })
+    }
+
+    this.getItemWhere = (collectionName, queryObject) => {
+        return db.collection(collectionName).find(queryObject).toArray()
+            .then( results => {
+                return results;
             })
             .catch( err => {
                 return false;
@@ -55,6 +65,19 @@ function DataBaseOP(){
             }else{
                 return true;
             }
+        })
+        .catch( err => {
+            return false;
+        })
+    }
+
+    this.deleteItem = (collectionName, queryObject) => {
+        var queryCollection = db.collection(collectionName);
+        return queryCollection.deleteOne(
+            queryObject
+        )
+        then( result => {
+            return true;
         })
         .catch( err => {
             return false;

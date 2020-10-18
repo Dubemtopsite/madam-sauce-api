@@ -6,20 +6,40 @@ function OrderClass(){
         console.log(returnData);
         if(returnData){
             if(returnData.length === 0){
-                return 'No order avaiable for now';
+                return {
+                    status: 200,
+                    message: 'You have some unattended orders',
+                    order_list: returnData
+                }
             }
-            return returnData;
         }else{
-            return 'No order avaiable menu for now';
+            return {
+                status: 200,
+                message: 'No order available menu for now'
+            }
         }
     }
 
     this.getFoodMenu = async () => {
         var returnData = await db.dbOP.getItemWhere('foodCollection', {available: '1'});
         if(returnData){
-            return returnData;
+            if(returnData.length > 0){
+                return {
+                    status: 200,
+                    message: 'Food available',
+                    food_menu: returnData
+                }
+            }else{
+                return {
+                    status: 200,
+                    message: 'No food available for the moment'
+                }
+            }
         }else{
-            return 'No food avaiable menu for now';
+            return {
+                status: 500,
+                message: 'No food avaiable menu for now'
+            }
         }
     }
 
@@ -38,15 +58,28 @@ function OrderClass(){
                     order_status: '0'
                 }
                 if(db.dbOP.saveItem('orderCollection', orderObject)){
-                    return 'Order Placed';
+                    return {
+                        status: 200,
+                        message: 'Order Placed',
+                        order_id: orderObject.item_id
+                    }
                 }else{
-                    return 'An error occured please try again';
+                    return {
+                        status: 500,
+                        message: 'An error occured please try again',
+                    }
                 }
             }else{
-                return 'No food with the provided id found on the menu';
+                return {
+                    status: 500,
+                    message: 'No food with the provided id found on the menu',
+                }
             }
         }else{
-            return 'Please provide the necessary input needed';
+            return {
+                status: 200,
+                message: 'Please provide the necessary input needed',
+            }
         }
     }
 
